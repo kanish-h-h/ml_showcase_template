@@ -1,0 +1,120 @@
+{% extends "base.html" %} {% block content %}
+<div class="demo-container">
+  <h1>🎭 Sentiment Analysis Demo</h1>
+  <p class="subtitle">Enter text to see real-time sentiment prediction</p>
+
+  <div class="input-section">
+    <textarea id="textInput" placeholder="Type your text here..." rows="4">
+{{ sample_text or '' }}</textarea
+    >
+    <button onclick="predictSentiment()" class="btn-primary">
+      Analyze Sentiment
+    </button>
+  </div>
+
+  <div id="result" class="result-container" style="display: none">
+    <h3>Prediction Result:</h3>
+    <div id="sentimentDisplay" class="sentiment-box"></div>
+    <div id="confidenceChart" class="confidence-chart"></div>
+  </div>
+
+  <div class="examples">
+    <h4>Try these examples:</h4>
+    <button onclick="fillText('This product is absolutely amazing!')">
+      Positive
+    </button>
+    <button onclick="fillText('Terrible experience, would not recommend.')">
+      Negative
+    </button>
+    <button onclick="fillText('It was okay, nothing special.')">Neutral</button>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const API_URL = '/api/predict/sentiment';
+
+  function fillText(text) {
+      document.getElementById('textInput').value = text;
+      predictSentiment();
+  }
+
+  async function predictSentiment() {
+      const text = document.getElementById('textInput').value.trim();
+      const resultDiv = document.getElementById('result');
+      const sentimentDisplay = document.getElementById('sentimentDisplay');
+
+      if (!text) {
+          alert('Please enter some text!');
+          return;
+      }
+
+      // Show loading
+      sentimentDisplay.innerHTML = '<div class="loading">Analyzing...</div>';
+      resultDiv.style.display = 'block';
+
+      try {
+          const response = await fetch(API_URL, {
+              method: 'POST',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify({text: text})
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+              displayResult(data.prediction);
+          } else {
+              sentimentDisplay.innerHTML = `<p class="error">Error: ${data.error}</p>`;
+          }
+      } catch (error) {
+          sentimentDisplay.innerHTML = `<p class="error">Network error: ${error.message}</p>`;
+      }
+  }
+
+  function displayResult(prediction) {
+      const sentimentDisplay = document.getElementById('sentimentDisplay');
+      const sentimentClass = prediction.sentiment === 'positive' ? 'positive' : 'negative';
+
+      sentimentDisplay.innerHTML = `
+          <div class="sentiment-result ${sentimentClass}">
+              <h2>${prediction.sentiment.toUpperCase()}</h2>
+              <p class="confidence">Confidence: ${(prediction.confidence * 100).toFixed(1)}%</p>
+              <p class="probabilities">
+                  Negative: ${(prediction.probabilities.negative * 100).toFixed(1)}% |
+                  Positive: ${(prediction.probabilities.positive * 100).toFixed(1)}%
+              </p>
+          </div>
+      `;
+
+      // Create confidence chart
+      createConfidenceChart(prediction.probabilities);
+  }
+
+  function createConfidenceChart(probs) {
+      const ctx = document.createElement('canvas');
+      document.getElementById('confidenceChart').innerHTML = '';
+      document.getElementById('confidenceChart').appendChild(ctx);
+
+      new Chart(ctx, {
+          type: 'bar',
+           {
+              labels: ['Negative', 'Positive'],
+              datasets: [{
+                  label: 'Probability',
+                   [probs.negative, probs.positive],
+                  backgroundColor: ['#ff6b6b', '#4caf50']
+              }]
+          },
+          options: {
+              scales: {
+                  y: {
+                      beginAtZero: true,
+                      max: 1
+                  }
+              }
+          }
+      });
+  }
+</script>
+{% endblock %}

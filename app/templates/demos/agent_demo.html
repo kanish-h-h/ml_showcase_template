@@ -1,0 +1,100 @@
+{% extends "base.html" %} {% block content %}
+<div class="agent-demo">
+  <div class="agent-header">
+    <h1>🤖 {{ agent.name }}</h1>
+    <p class="agent-description">{{ agent.description }}</p>
+  </div>
+
+  <div class="chat-container">
+    <div id="chatMessages" class="messages">
+      <!-- Messages will appear here -->
+      <div class="message agent-message">
+        <strong>{{ agent.name }}:</strong>
+        <p>Hello! I'm ready to help. What would you like to discuss?</p>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input
+        type="text"
+        id="userInput"
+        placeholder="Type your message..."
+        onkeypress="handleKeyPress(event)"
+      />
+      <button onclick="sendMessage()" class="btn-primary">Send</button>
+    </div>
+  </div>
+
+  <div class="agent-info">
+    <h3>About This Agent</h3>
+    <ul>
+      <li><strong>Type:</strong> {{ agent.name }}</li>
+      <li>
+        <strong>Capabilities:</strong> Research assistance, paper summarization
+      </li>
+      <li>
+        <strong>Tools:</strong> Web search, LLM integration, document analysis
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  const AGENT_ID = '{{ agent.name|lower|replace(" ", "_") }}';
+  const API_URL = `/api/agent/${AGENT_ID}/chat`;
+
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  }
+
+  async function sendMessage() {
+    const input = document.getElementById("userInput");
+    const message = input.value.trim();
+
+    if (!message) return;
+
+    // Add user message to chat
+    addMessage("user", message);
+    input.value = "";
+
+    // Show typing indicator
+    addMessage("agent", "<em>Thinking...</em>");
+    const messagesDiv = document.getElementById("chatMessages");
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: message }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Remove typing indicator
+        messagesDiv.removeChild(messagesDiv.lastChild);
+        // Add agent response
+        addMessage("agent", data.response);
+      } else {
+        messagesDiv.removeChild(messagesDiv.lastChild);
+        addMessage("agent", `Error: ${data.error}`);
+      }
+    } catch (error) {
+      messagesDiv.removeChild(messagesDiv.lastChild);
+      addMessage("agent", `Network error: ${error.message}`);
+    }
+  }
+
+  function addMessage(role, content) {
+    const messagesDiv = document.getElementById("chatMessages");
+    const messageDiv = document.createElement("div");
+    messageDiv.className = `message ${role}-message`;
+    messageDiv.innerHTML = `<strong>${role === "user" ? "You" : "{{ agent.name }}"}:</strong><p>${content}</p>`;
+    messagesDiv.appendChild(messageDiv);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+</script>
+{% endblock %}
