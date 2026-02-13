@@ -1,40 +1,34 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}ML Showcase{% endblock %} | AI Portfolio</title>
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
-  <body>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
     <header>
-      <nav>
-        <div class="nav-brand">🤖 ML Showcase</div>
-        <div class="nav-links">
-          <a href="{{ url_for('index') }}">Home</a>
-          <a href="{{ url_for('gallery') }}">Models</a>
-          <a href="{{ url_for('sentiment_demo') }}">Demos</a>
-          <a href="#">About</a>
-        </div>
-      </nav>
+        <nav>
+            <div class="nav-brand">🤖 ML Showcase</div>
+            <div class="nav-links">
+                <a href="{{ url_for('index') }}">Home</a>
+                <a href="{{ url_for('gallery') }}">Models</a>
+                <a href="{{ url_for('sentiment_demo') }}">Demos</a>
+                <a href="{{ url_for('api_docs_page') }}">API Docs</a>
+                <a href="#">About</a>
+            </div>
+        </nav>
     </header>
-
-    <main>{% block content %}{% endblock %}</main>
-
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
     <footer>
-      <p>
-        &copy; {% now 'local', '%Y' %} Your Name | <a href="#">GitHub</a> |
-        <a href="#">Contact</a>
-      </p>
+        <p>&copy; {{ current_year }} Your Name | <a href="#">GitHub</a> | <a href="#">Contact</a></p>
     </footer>
-
+    
     {% block scripts %}{% endblock %}
-  </body>
+</body>
 </html>

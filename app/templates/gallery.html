@@ -1,0 +1,498 @@
+{% extends "base.html" %} {% block title %}Model Gallery{% endblock %} {% block
+content %}
+<div class="gallery-container">
+  <div class="gallery-header">
+    <h1>🤖 Model Gallery</h1>
+    <p class="subtitle">
+      Explore my machine learning projects and capabilities
+    </p>
+  </div>
+
+  <div class="filter-section">
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">All Models</button>
+      <button class="filter-btn" data-filter="nlp">NLP</button>
+      <button class="filter-btn" data-filter="vision">Computer Vision</button>
+      <button class="filter-btn" data-filter="tabular">Tabular Data</button>
+      <button class="filter-btn" data-filter="agent">Agents</button>
+    </div>
+  </div>
+
+  <div class="projects-grid" id="projectsGrid">
+    <!-- Project 1: Sentiment Analysis -->
+    <div class="project-card" data-tags="nlp,classification,text">
+      <div class="project-header">
+        <h2>🎭 Sentiment Analysis</h2>
+        <span class="project-badge">NLP</span>
+      </div>
+      <p class="project-description">
+        Classifies text sentiment with high accuracy using transformer-based
+        models. Trained on 50k+ labeled reviews.
+      </p>
+      <div class="project-stats">
+        <div class="stat">
+          <span class="stat-value">92.3%</span>
+          <span class="stat-label">Accuracy</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">50k+</span>
+          <span class="stat-label">Training Samples</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">BERT</span>
+          <span class="stat-label">Architecture</span>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">NLP</span>
+        <span class="tag">Classification</span>
+        <span class="tag">Transformers</span>
+        <span class="tag">Scikit-learn</span>
+      </div>
+      <div class="project-actions">
+        <a href="{{ url_for('sentiment_demo') }}" class="btn-primary">
+          <i class="fas fa-play"></i> Try Demo
+        </a>
+        <a href="#" class="btn-secondary">
+          <i class="fas fa-code"></i> View Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Project 2: Image Classifier -->
+    <div class="project-card" data-tags="vision,cnn,image">
+      <div class="project-header">
+        <h2>🖼️ Image Classifier</h2>
+        <span class="project-badge">Computer Vision</span>
+      </div>
+      <p class="project-description">
+        Multi-class image classification using CNN architecture. Recognizes 100+
+        object categories with real-time inference.
+      </p>
+      <div class="project-stats">
+        <div class="stat">
+          <span class="stat-value">89.7%</span>
+          <span class="stat-label">Top-1 Accuracy</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">98.2%</span>
+          <span class="stat-label">Top-5 Accuracy</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">ResNet-50</span>
+          <span class="stat-label">Architecture</span>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Computer Vision</span>
+        <span class="tag">CNN</span>
+        <span class="tag">PyTorch</span>
+        <span class="tag">Transfer Learning</span>
+      </div>
+      <div class="project-actions">
+        <a href="{{ url_for('image_demo') }}" class="btn-primary">
+          <i class="fas fa-play"></i> Try Demo
+        </a>
+        <a href="#" class="btn-secondary">
+          <i class="fas fa-code"></i> View Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Project 3: Research Agent -->
+    <div class="project-card" data-tags="agent,llm,research">
+      <div class="project-header">
+        <h2>📚 Research Assistant Agent</h2>
+        <span class="project-badge">Agent System</span>
+      </div>
+      <p class="project-description">
+        Intelligent agent that helps find and summarize research papers.
+        Integrates web search, LLM reasoning, and document analysis.
+      </p>
+      <div class="project-stats">
+        <div class="stat">
+          <span class="stat-value">Multi-Tool</span>
+          <span class="stat-label">Agent Type</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">GPT-4</span>
+          <span class="stat-label">LLM Backend</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">Real-time</span>
+          <span class="stat-label">Response Time</span>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Agent</span>
+        <span class="tag">LLM</span>
+        <span class="tag">Research</span>
+        <span class="tag">LangChain</span>
+      </div>
+      <div class="project-actions">
+        <a
+          href="{{ url_for('agent_demo', agent_name='research') }}"
+          class="btn-primary"
+        >
+          <i class="fas fa-robot"></i> Chat with Agent
+        </a>
+        <a href="#" class="btn-secondary">
+          <i class="fas fa-code"></i> View Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Project 4: Time Series Forecasting -->
+    <div class="project-card" data-tags="timeseries,forecasting,tabular">
+      <div class="project-header">
+        <h2>📈 Time Series Forecaster</h2>
+        <span class="project-badge">Forecasting</span>
+      </div>
+      <p class="project-description">
+        Predicts future values using LSTM networks and ensemble methods. Handles
+        seasonal patterns and anomaly detection.
+      </p>
+      <div class="project-stats">
+        <div class="stat">
+          <span class="stat-value">0.87</span>
+          <span class="stat-label">R² Score</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">24h</span>
+          <span class="stat-label">Forecast Horizon</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">LSTM+XGBoost</span>
+          <span class="stat-label">Architecture</span>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Time Series</span>
+        <span class="tag">Forecasting</span>
+        <span class="tag">LSTM</span>
+        <span class="tag">XGBoost</span>
+      </div>
+      <div class="project-actions">
+        <a href="#" class="btn-primary disabled">
+          <i class="fas fa-play"></i> Demo Coming Soon
+        </a>
+        <a href="#" class="btn-secondary">
+          <i class="fas fa-code"></i> View Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Project 5: Data Analysis Agent -->
+    <div class="project-card" data-tags="agent,analytics,data">
+      <div class="project-header">
+        <h2>📊 Data Analysis Agent</h2>
+        <span class="project-badge">Agent System</span>
+      </div>
+      <p class="project-description">
+        Automated data analysis agent that generates insights, visualizations,
+        and recommendations from datasets.
+      </p>
+      <div class="project-stats">
+        <div class="stat">
+          <span class="stat-value">Auto-EDA</span>
+          <span class="stat-label">Capability</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">Pandas</span>
+          <span class="stat-label">Data Processing</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">Plotly</span>
+          <span class="stat-label">Visualization</span>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Agent</span>
+        <span class="tag">Data Analysis</span>
+        <span class="tag">EDA</span>
+        <span class="tag">Automation</span>
+      </div>
+      <div class="project-actions">
+        <a
+          href="{{ url_for('agent_demo', agent_name='data_analysis') }}"
+          class="btn-primary"
+        >
+          <i class="fas fa-robot"></i> Chat with Agent
+        </a>
+        <a href="#" class="btn-secondary">
+          <i class="fas fa-code"></i> View Code
+        </a>
+      </div>
+    </div>
+
+    <!-- Project 6: Recommendation System -->
+    <div class="project-card" data-tags="recommendation,collaborative,tabular">
+      <div class="project-header">
+        <h2>⭐ Recommendation Engine</h2>
+        <span class="project-badge">Recommendation</span>
+      </div>
+      <p class="project-description">
+        Hybrid recommendation system combining collaborative filtering and
+        content-based approaches for personalized suggestions.
+      </p>
+      <div class="project-stats">
+        <div class="stat">
+          <span class="stat-value">0.78</span>
+          <span class="stat-label">Precision@10</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">100k+</span>
+          <span class="stat-label">Users</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">Hybrid</span>
+          <span class="stat-label">Approach</span>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">Recommendation</span>
+        <span class="tag">Collaborative Filtering</span>
+        <span class="tag">Matrix Factorization</span>
+        <span class="tag">Scikit-learn</span>
+      </div>
+      <div class="project-actions">
+        <a href="#" class="btn-primary disabled">
+          <i class="fas fa-play"></i> Demo Coming Soon
+        </a>
+        <a href="#" class="btn-secondary">
+          <i class="fas fa-code"></i> View Code
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="gallery-footer">
+    <p>
+      💡 <strong>Tips:</strong> Click on "Try Demo" to interact with live
+      models!
+    </p>
+    <p>
+      🔗 All projects available on
+      <a href="#" style="color: #6366f1; text-decoration: underline">GitHub</a>
+    </p>
+  </div>
+</div>
+
+<style>
+  .gallery-container {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .gallery-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .gallery-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+  }
+
+  .filter-section {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .filter-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .filter-btn {
+    padding: 10px 20px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    color: #475569;
+  }
+
+  .filter-btn:hover {
+    background: #e2e8f0;
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+  }
+
+  .project-card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s;
+    border: 1px solid #e2e8f0;
+  }
+
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    border-color: #cbd5e1;
+  }
+
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .project-header h2 {
+    font-size: 1.4rem;
+    color: #1e293b;
+  }
+
+  .project-badge {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .project-description {
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .project-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8fafc;
+    border-radius: 10px;
+  }
+
+  .stat {
+    text-align: center;
+  }
+
+  .stat-value {
+    display: block;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #6366f1;
+    margin-bottom: 5px;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .project-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .btn-secondary {
+    background: white;
+    color: #6366f1;
+    border: 2px solid #6366f1;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .btn-secondary:hover {
+    background: #f0f4ff;
+  }
+
+  .btn-primary.disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+  }
+
+  .gallery-footer {
+    text-align: center;
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    margin-top: 20px;
+    color: #64748b;
+  }
+
+  .gallery-footer a {
+    color: #6366f1;
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  // Filter functionality
+  document.addEventListener("DOMContentLoaded", function () {
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const projectCards = document.querySelectorAll(".project-card");
+
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        // Update active button
+        filterButtons.forEach((btn) => btn.classList.remove("active"));
+        this.classList.add("active");
+
+        const filter = this.getAttribute("data-filter");
+
+        // Filter projects
+        projectCards.forEach((card) => {
+          if (
+            filter === "all" ||
+            card.getAttribute("data-tags").includes(filter)
+          ) {
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      });
+    });
+  });
+</script>
+{% endblock %}

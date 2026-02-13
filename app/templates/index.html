@@ -1,0 +1,564 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="homepage-container">
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>🤖 ML & AI Showcase</h1>
+            <p class="hero-subtitle">
+                Explore my machine learning models and intelligent agent systems
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('gallery') }}" class="btn-primary btn-large">
+                    <i class="fas fa-th-large"></i> View All Projects
+                </a>
+                <a href="{{ url_for('api_docs_page') }}" class="btn-secondary btn-large">
+                    <i class="fas fa-book"></i> API Documentation
+                </a>
+            </div>
+        </div>
+        <div class="hero-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🧠</div>
+                <div class="stat-number">12+</div>
+                <div class="stat-label">ML Models</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🤖</div>
+                <div class="stat-number">5+</div>
+                <div class="stat-label">AI Agents</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-number">95%+</div>
+                <div class="stat-label">Avg. Accuracy</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Projects Section -->
+    <section class="featured-section">
+        <div class="section-header">
+            <h2>✨ Featured Projects</h2>
+            <p>Interactive demos of my latest ML and agent work</p>
+        </div>
+
+        <div class="projects-grid">
+            <!-- Project 1: Sentiment Analysis -->
+            <div class="project-card featured">
+                <div class="project-badge featured-badge">🔥 Featured</div>
+                <div class="project-icon">🎭</div>
+                <h3>Sentiment Analysis</h3>
+                <p class="project-description">
+                    Real-time text sentiment classification with 92% accuracy.
+                    Try it live and see predictions instantly!
+                </p>
+                <div class="project-meta">
+                    <span class="tag">NLP</span>
+                    <span class="tag">Classification</span>
+                    <span class="tag">Scikit-learn</span>
+                </div>
+                <div class="project-actions">
+                    <a href="{{ url_for('sentiment_demo') }}" class="btn-primary">
+                        <i class="fas fa-play"></i> Try Demo
+                    </a>
+                    <a href="{{ url_for('gallery') }}" class="btn-secondary">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 2: Research Agent -->
+            <div class="project-card featured">
+                <div class="project-badge featured-badge">✨ New</div>
+                <div class="project-icon">📚</div>
+                <h3>Research Assistant Agent</h3>
+                <p class="project-description">
+                    Intelligent agent that finds and summarizes research papers.
+                    Powered by LLM and web search tools.
+                </p>
+                <div class="project-meta">
+                    <span class="tag">Agent</span>
+                    <span class="tag">LLM</span>
+                    <span class="tag">Research</span>
+                </div>
+                <div class="project-actions">
+                    <a href="{{ url_for('agent_demo', agent_name='research') }}" class="btn-primary">
+                        <i class="fas fa-robot"></i> Chat with Agent
+                    </a>
+                    <a href="{{ url_for('gallery') }}" class="btn-secondary">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 3: Image Classifier -->
+            <div class="project-card">
+                <div class="project-icon">🖼️</div>
+                <h3>Image Classifier</h3>
+                <p class="project-description">
+                    Multi-class image recognition using CNN architecture.
+                    Supports 100+ object categories.
+                </p>
+                <div class="project-meta">
+                    <span class="tag">Computer Vision</span>
+                    <span class="tag">CNN</span>
+                    <span class="tag">PyTorch</span>
+                </div>
+                <div class="project-actions">
+                    <a href="{{ url_for('image_demo') }}" class="btn-primary">
+                        <i class="fas fa-play"></i> Try Demo
+                    </a>
+                    <a href="{{ url_for('gallery') }}" class="btn-secondary">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
+                </div>
+            </div>
+
+            <!-- Project 4: Data Analysis Agent -->
+            <div class="project-card">
+                <div class="project-icon">📊</div>
+                <h3>Data Analysis Agent</h3>
+                <p class="project-description">
+                    Automated EDA and insights generation from datasets.
+                    Creates visualizations and recommendations.
+                </p>
+                <div class="project-meta">
+                    <span class="tag">Agent</span>
+                    <span class="tag">Data Analysis</span>
+                    <span class="tag">EDA</span>
+                </div>
+                <div class="project-actions">
+                    <a href="{{ url_for('agent_demo', agent_name='data_analysis') }}" class="btn-primary">
+                        <i class="fas fa-robot"></i> Chat with Agent
+                    </a>
+                    <a href="{{ url_for('gallery') }}" class="btn-secondary">
+                        <i class="fas fa-info-circle"></i> Learn More
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section">
+        <div class="about-content">
+            <h2>About This Showcase</h2>
+            <p>
+                Welcome to my machine learning and AI agent portfolio! This interactive showcase
+                demonstrates my work in natural language processing, computer vision, and
+                intelligent agent systems.
+            </p>
+            <p>
+                Each project includes:
+                <ul class="features-list">
+                    <li><i class="fas fa-check-circle"></i> <strong>Live demos</strong> to test models interactively</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>API access</strong> for programmatic integration</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Performance metrics</strong> and model details</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>Source code</strong> available on GitHub</li>
+                </ul>
+            </p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('gallery') }}" class="btn-primary">
+                    <i class="fas fa-th-large"></i> Browse All Projects
+                </a>
+                <a href="#" class="btn-secondary">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section class="tech-section">
+        <div class="section-header">
+            <h2>🛠️ Technologies Used</h2>
+            <p>Tools and frameworks powering these projects</p>
+        </div>
+        <div class="tech-grid">
+            <div class="tech-card">
+                <div class="tech-icon">🐍</div>
+                <h4>Python</h4>
+                <p>Primary programming language</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">🤖</div>
+                <h4>Scikit-learn</h4>
+                <p>ML algorithms and pipelines</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">🔥</div>
+                <h4>PyTorch</h4>
+                <p>Deep learning framework</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">🧠</div>
+                <h4>Transformers</h4>
+                <p>NLP models and embeddings</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">🔗</div>
+                <h4>LangChain</h4>
+                <p>Agent orchestration</p>
+            </div>
+            <div class="tech-card">
+                <div class="tech-icon">🌐</div>
+                <h4>Flask</h4>
+                <p>Web framework</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="footer-cta">
+        <div class="cta-content">
+            <h2>🚀 Ready to Explore?</h2>
+            <p>Start by trying the interactive demos or browse the complete project gallery.</p>
+            <div class="cta-buttons-large">
+                <a href="{{ url_for('gallery') }}" class="btn-primary btn-xlarge">
+                    <i class="fas fa-th-large"></i> View Project Gallery
+                </a>
+                <a href="{{ url_for('api_docs_page') }}" class="btn-secondary btn-xlarge">
+                    <i class="fas fa-book"></i> Read API Docs
+                </a>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.homepage-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    padding: 80px 40px;
+    border-radius: 20px;
+    margin-bottom: 50px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto 40px;
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.95;
+    margin-bottom: 30px;
+    line-height: 1.7;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-large {
+    padding: 15px 40px;
+    font-size: 1.1rem;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-card {
+    text-align: center;
+    padding: 20px;
+    min-width: 150px;
+}
+
+.stat-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Featured Projects Section */
+.featured-section {
+    margin-bottom: 60px;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    color: #1e293b;
+}
+
+.section-header p {
+    color: #64748b;
+    font-size: 1.1rem;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.project-card {
+    background: white;
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+    border-color: #cbd5e1;
+}
+
+.project-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: linear-gradient(135deg, #ef4444, #f97316);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 10;
+}
+
+.featured-badge {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.project-icon {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+}
+
+.project-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #1e293b;
+}
+
+.project-description {
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.project-meta {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.project-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: auto;
+}
+
+/* About Section */
+.about-section {
+    background: white;
+    padding: 60px 40px;
+    border-radius: 15px;
+    margin-bottom: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.about-content {
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.about-content h2 {
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    color: #1e293b;
+}
+
+.about-content p {
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    font-size: 1.05rem;
+}
+
+.features-list {
+    text-align: left;
+    margin: 30px 0;
+    padding-left: 20px;
+}
+
+.features-list li {
+    margin: 12px 0;
+    color: #475569;
+    line-height: 1.7;
+    font-size: 1.05rem;
+}
+
+.features-list i {
+    color: #10b981;
+    margin-right: 10px;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+/* Technologies Section */
+.tech-section {
+    margin-bottom: 60px;
+}
+
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.tech-card {
+    background: white;
+    padding: 30px 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s;
+    border: 1px solid #e2e8f0;
+}
+
+.tech-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    border-color: #cbd5e1;
+}
+
+.tech-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.tech-card h4 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    color: #1e293b;
+}
+
+.tech-card p {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* Footer CTA */
+.footer-cta {
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    color: white;
+    padding: 60px 40px;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+.cta-content h2 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+.cta-content p {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.cta-buttons-large {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-xlarge {
+    padding: 18px 50px;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-buttons,
+    .cta-buttons,
+    .cta-buttons-large {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-large,
+    .btn-xlarge {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+</style>
+{% endblock %}

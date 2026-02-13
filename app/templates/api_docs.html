@@ -1,0 +1,581 @@
+{% extends "base.html" %} {% block title %}API Documentation{% endblock %} {%
+block content %}
+<div class="api-docs-container">
+  <div class="api-header">
+    <h1>📚 API Documentation</h1>
+    <p class="subtitle">Programmatic access to ML models and agent systems</p>
+    <div class="api-base-url">
+      <strong>Base URL:</strong> <code>{{ request.host_url }}api</code>
+    </div>
+  </div>
+
+  <div class="api-section">
+    <h2>🔹 Authentication</h2>
+    <p class="api-description">
+      Currently, all endpoints are publicly accessible. For production
+      deployment, implement API key authentication.
+    </p>
+    <div class="code-block">
+      <pre><code># Example with API key (future implementation)
+headers = {
+    'Authorization': 'Bearer YOUR_API_KEY',
+    'Content-Type': 'application/json'
+}</code></pre>
+    </div>
+  </div>
+
+  <!-- Sentiment Analysis API -->
+  <div class="api-section">
+    <div class="endpoint-header">
+      <h2 id="sentiment">🎭 Sentiment Analysis</h2>
+      <span class="endpoint-method">POST</span>
+    </div>
+    <p class="api-description">
+      Analyze text sentiment and get confidence scores.
+    </p>
+
+    <div class="endpoint-details">
+      <h3>Endpoint</h3>
+      <div class="endpoint-url">
+        <code>POST /api/predict/sentiment</code>
+      </div>
+
+      <h3>Request Body</h3>
+      <div class="request-example">
+        <h4>JSON Schema</h4>
+        <div class="code-block">
+          <pre><code>{
+  "text": "string (required) - Text to analyze sentiment"
+}</code></pre>
+        </div>
+
+        <h4>Example Request</h4>
+        <div class="code-block">
+          <pre><code class="language-python"># Python example
+import requests
+
+url = "{{ request.host_url }}api/predict/sentiment"
+data = {
+    "text": "This product is absolutely amazing!"
+}
+
+response = requests.post(url, json=data)
+result = response.json()
+print(result)</code></pre>
+        </div>
+
+        <div class="code-block">
+          <pre><code class="language-javascript">// JavaScript example
+fetch('{{ request.host_url }}api/predict/sentiment', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    text: 'This product is absolutely amazing!'
+  })
+})
+.then(response => response.json())
+.then(data => console.log(data));</code></pre>
+        </div>
+      </div>
+
+      <h3>Response</h3>
+      <div class="response-example">
+        <h4>Success Response (200)</h4>
+        <div class="code-block">
+          <pre><code>{
+  "success": true,
+  "prediction": {
+    "sentiment": "positive",
+    "confidence": 0.943,
+    "probabilities": {
+      "negative": 0.057,
+      "positive": 0.943
+    }
+  }
+}</code></pre>
+        </div>
+
+        <h4>Error Response (400)</h4>
+        <div class="code-block">
+          <pre><code>{
+  "error": "No text provided"
+}</code></pre>
+        </div>
+      </div>
+
+      <h3>Response Fields</h3>
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Field</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>success</code></td>
+            <td>boolean</td>
+            <td>Request status</td>
+          </tr>
+          <tr>
+            <td><code>prediction.sentiment</code></td>
+            <td>string</td>
+            <td>Classification result: "positive" or "negative"</td>
+          </tr>
+          <tr>
+            <td><code>prediction.confidence</code></td>
+            <td>float</td>
+            <td>Confidence score (0.0 to 1.0)</td>
+          </tr>
+          <tr>
+            <td><code>prediction.probabilities</code></td>
+            <td>object</td>
+            <td>Probability distribution for each class</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- List Models API -->
+  <div class="api-section">
+    <div class="endpoint-header">
+      <h2 id="list-models">📋 List Available Models</h2>
+      <span class="endpoint-method">GET</span>
+    </div>
+    <p class="api-description">Get a list of all available ML models.</p>
+
+    <div class="endpoint-details">
+      <h3>Endpoint</h3>
+      <div class="endpoint-url">
+        <code>GET /api/models</code>
+      </div>
+
+      <h3>Example Request</h3>
+      <div class="code-block">
+        <pre><code class="language-python">import requests
+
+response = requests.get('{{ request.host_url }}api/models')
+models = response.json()
+print(models)</code></pre>
+      </div>
+
+      <h3>Response</h3>
+      <div class="code-block">
+        <pre><code>{
+  "models": [
+    "sentiment_model",
+    "tfidf_vectorizer",
+    "image_classifier",
+    "time_series_forecaster"
+  ]
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Agent Chat API -->
+  <div class="api-section">
+    <div class="endpoint-header">
+      <h2 id="agent-chat">🤖 Agent Chat Interface</h2>
+      <span class="endpoint-method">POST</span>
+    </div>
+    <p class="api-description">Interact with AI agents programmatically.</p>
+
+    <div class="endpoint-details">
+      <h3>Endpoint</h3>
+      <div class="endpoint-url">
+        <code>POST /api/agent/&lt;agent_name&gt;/chat</code>
+      </div>
+
+      <h3>Path Parameters</h3>
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>agent_name</code></td>
+            <td>string</td>
+            <td>Agent identifier</td>
+            <td><code>research</code>, <code>data_analysis</code></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Request Body</h3>
+      <div class="code-block">
+        <pre><code>{
+  "message": "string (required) - User message to agent"
+}</code></pre>
+      </div>
+
+      <h3>Example Request</h3>
+      <div class="code-block">
+        <pre><code class="language-python">import requests
+
+url = "{{ request.host_url }}api/agent/research/chat"
+data = {
+    "message": "Find recent papers about large language models"
+}
+
+response = requests.post(url, json=data)
+result = response.json()
+print(result)</code></pre>
+      </div>
+
+      <h3>Response</h3>
+      <div class="code-block">
+        <pre><code>{
+  "success": true,
+  "response": "I found several relevant papers on this topic...",
+  "history": [
+    {
+      "role": "user",
+      "content": "Find recent papers about large language models",
+      "timestamp": "2026-02-14T10:30:00"
+    },
+    {
+      "role": "agent",
+      "content": "I found several relevant papers...",
+      "timestamp": "2026-02-14T10:30:01"
+    }
+  ]
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- List Agents API -->
+  <div class="api-section">
+    <div class="endpoint-header">
+      <h2 id="list-agents">📋 List Available Agents</h2>
+      <span class="endpoint-method">GET</span>
+    </div>
+    <p class="api-description">
+      Get information about all available AI agents.
+    </p>
+
+    <div class="endpoint-details">
+      <h3>Endpoint</h3>
+      <div class="endpoint-url">
+        <code>GET /api/agents</code>
+      </div>
+
+      <h3>Response</h3>
+      <div class="code-block">
+        <pre><code>{
+  "agents": [
+    {
+      "id": "research",
+      "name": "Research Assistant",
+      "description": "Helps find and summarize research papers"
+    },
+    {
+      "id": "data_analysis",
+      "name": "Data Analyst",
+      "description": "Analyzes datasets and generates insights"
+    }
+  ]
+}</code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="api-section">
+    <h2>📊 Rate Limiting</h2>
+    <p class="api-description">Current rate limits (for development):</p>
+    <ul class="rate-limit-list">
+      <li><strong>Predictions:</strong> 100 requests/hour per IP</li>
+      <li><strong>Agent chats:</strong> 50 messages/hour per IP</li>
+      <li><strong>Model listings:</strong> Unlimited</li>
+    </ul>
+    <p class="note">
+      <i class="fas fa-info-circle"></i> In production, implement proper rate
+      limiting and authentication using Flask-Limiter and API keys.
+    </p>
+  </div>
+
+  <div class="api-section">
+    <h2>🐛 Error Handling</h2>
+    <p class="api-description">
+      All endpoints return appropriate HTTP status codes:
+    </p>
+    <table class="api-table">
+      <thead>
+        <tr>
+          <th>Status Code</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>200 OK</code></td>
+          <td>Successful request</td>
+        </tr>
+        <tr>
+          <td><code>400 Bad Request</code></td>
+          <td>Missing or invalid parameters</td>
+        </tr>
+        <tr>
+          <td><code>404 Not Found</code></td>
+          <td>Resource not found</td>
+        </tr>
+        <tr>
+          <td><code>429 Too Many Requests</code></td>
+          <td>Rate limit exceeded</td>
+        </tr>
+        <tr>
+          <td><code>500 Internal Server Error</code></td>
+          <td>Server error (check logs)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="api-footer">
+    <h2>🚀 Getting Started</h2>
+    <ol class="getting-started">
+      <li>Choose an endpoint from above</li>
+      <li>Send a request using your preferred HTTP client</li>
+      <li>Parse the JSON response</li>
+      <li>Integrate into your application!</li>
+    </ol>
+
+    <div class="quick-test">
+      <h3>Quick Test with cURL</h3>
+      <div class="code-block">
+        <pre><code># Test sentiment analysis
+curl -X POST {{ request.host_url }}api/predict/sentiment \
+  -H "Content-Type: application/json" \
+  -d '{"text": "I love this API!"}'
+
+# List available agents
+curl {{ request.host_url }}api/agents</code></pre>
+      </div>
+    </div>
+
+    <div class="contact-section">
+      <h3>Need Help?</h3>
+      <p>
+        <i class="fas fa-envelope"></i> Email: your.email@example.com<br />
+        <i class="fab fa-github"></i> GitHub:
+        <a href="#">github.com/yourusername</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .api-docs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .api-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 30px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  }
+
+  .api-header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .subtitle {
+    color: #64748b;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+
+  .api-base-url {
+    background: #f1f5f9;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: "Courier New", monospace;
+    font-size: 0.95rem;
+    margin-top: 15px;
+  }
+
+  .api-section {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    border-left: 4px solid #6366f1;
+  }
+
+  .endpoint-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f1f5f9;
+  }
+
+  .endpoint-header h2 {
+    font-size: 1.6rem;
+    color: #1e293b;
+    margin: 0;
+  }
+
+  .endpoint-method {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .api-description {
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 20px;
+  }
+
+  .endpoint-url {
+    background: #f8fafc;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-family: "Courier New", monospace;
+    font-size: 1.1rem;
+    margin: 15px 0;
+    border-left: 3px solid #10b981;
+  }
+
+  .code-block {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 15px 0;
+    overflow-x: auto;
+    font-family: "Courier New", monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  code {
+    font-family: "Courier New", monospace;
+  }
+
+  .request-example,
+  .response-example {
+    margin: 20px 0;
+  }
+
+  .api-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+
+  .api-table th {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+  }
+
+  .api-table td {
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .api-table tr:nth-child(even) {
+    background: #f8fafc;
+  }
+
+  .api-table tr:hover {
+    background: #f1f5f9;
+  }
+
+  .rate-limit-list {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px 0;
+  }
+
+  .rate-limit-list li {
+    margin: 8px 0;
+    line-height: 1.6;
+  }
+
+  .note {
+    background: #dbeafe;
+    border-left: 4px solid #3b82f6;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 20px 0;
+    font-size: 0.95rem;
+  }
+
+  .getting-started {
+    background: #f0fdf4;
+    border-left: 4px solid #10b981;
+    padding: 20px;
+    border-radius: 8px;
+    margin: 25px 0;
+  }
+
+  .getting-started li {
+    margin: 10px 0;
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .quick-test {
+    margin: 30px 0;
+    padding: 25px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .contact-section {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-top: 30px;
+    text-align: center;
+  }
+
+  .contact-section a {
+    color: white;
+    text-decoration: underline;
+  }
+
+  .contact-section i {
+    margin-right: 8px;
+  }
+
+  .api-footer {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid #e2e8f0;
+  }
+</style>
+{% endblock %}
