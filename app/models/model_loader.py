@@ -1,4 +1,3 @@
-from operator import mod
 import os
 import pickle
 import joblib
@@ -8,16 +7,21 @@ from pathlib import Path
 class ModelManager:
     """Centralized model loading and caching"""
 
-    _models = {}  # singleton pattern - load once, use everywhere
+    _models = {}
 
     @classmethod
     def get_model(cls, model_name):
         """Get or load model (cached)"""
         if model_name not in cls._models:
             model_path = Path(__file__).parent / f"{model_name}.pkl"
+
+            # If model doesn't exist, return a mock model for demo
+            if not model_path.exists():
+                print(f"⚠️ Model '{model_name}' not found. Using mock model.")
+                return MockModel()
+
             print(f"Loading model: {model_name}")
 
-            # Support mulitple formats
             if model_path.suffix == ".pkl":
                 with open(model_path, "rb") as f:
                     cls._models[model_name] = pickle.load(f)
@@ -37,11 +41,32 @@ class ModelManager:
         ]
 
 
+# Mock model for demo purposes (when real models don't exist yet)
+class MockModel:
+    def predict(self, X):
+        import numpy as np
+
+        # Return random predictions for demo
+        return np.random.randint(0, 2, size=len(X) if hasattr(X, "__len__") else 1)
+
+    def predict_proba(self, X):
+        import numpy as np
+
+        # Return random probabilities
+        probs = np.random.rand(len(X) if hasattr(X, "__len__") else 1, 2)
+        return probs / probs.sum(axis=1, keepdims=True)
+
+
 # Example: Your custom model wrapper
 class SentimentClassifier:
-    def __init__(self) -> None:
-        self.model = ModelManager.get_model("sentiment_model")
-        self.vectorizer = ModelManager.get_model("tfidf_vectorizer")
+    def __init__(self):
+        try:
+            self.model = ModelManager.get_model("sentiment_model")
+            self.vectorizer = ModelManager.get_model("tfidf_vectorizer")
+        except:
+            # Use mock if models don't exist
+            self.model = MockModel()
+            self.vectorizer = MockVectorizer()
 
     def predict(self, text):
         """Predict sentiment with confidence"""
@@ -51,14 +76,22 @@ class SentimentClassifier:
         X = self.vectorizer.transform([text])
 
         # Predict
-        prediciton = self.model.predict(X)[0]
+        prediction = self.model.predict(X)[0]
         probabilities = self.model.predict_proba(X)[0]
 
         return {
-            "sentiment": "positive" if prediciton == 1 else "negative",
+            "sentiment": "positive" if prediction == 1 else "negative",
             "confidence": float(max(probabilities)),
             "probabilities": {
                 "negative": float(probabilities[0]),
                 "positive": float(probabilities[1]),
             },
         }
+
+
+class MockVectorizer:
+    def transform(self, texts):
+        import numpy as np
+
+        # Return random features for demo
+        return np.random.rand(len(texts), 100)
