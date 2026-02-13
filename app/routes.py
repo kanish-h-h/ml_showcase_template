@@ -1,5 +1,6 @@
 from flask import json, render_template, jsonify, request
 from .models.model_loader import SentimentClassifier, ModelManager
+from .agents.agent_system import AGENTS
 
 
 def init_app(app):
@@ -76,3 +77,60 @@ def init_app(app):
     def list_models():
         """List all available models"""
         return jsonify({"models": ModelManager.list_available_models()})
+
+    # ===== AGENTS =====
+
+    @app.route("/demo/agent/<agent_name>")
+    def agent_demo(agent_name):
+        """Interactive agent demo page"""
+        agent = AGENTS.get(agent_name)
+        if not agent:
+            return "Agent not found", 404
+
+        return render_template(
+            "demos/agent_demo.html", agent=agent, title=f"{agent.name} Demo"
+        )
+
+    @app.route("/api/agent/<agent_name>/chat", methods=["POST"])
+    def agent_chat(agent_name):
+        """API endpoint for agent interaction"""
+        agent = AGENTS.get(agent_name)
+        if not agent:
+            return jsonify({"error": "Agent not found"}), 404
+
+        try:
+            data = request.get_json()
+            user_message = data.get("message", "")
+
+            if not user_message:
+                return jsonify({"error": "No message provided"}), 400
+
+            # Process with agent
+            response = agent.process(user_message)
+
+            return jsonify(
+                {
+                    "success": True,
+                    "response": response,
+                    "history": agent.conversation_history[-5:],  # last 5 messages
+                }
+            )
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    @app.route("/api/agents")
+    def list_agents():
+        """List all available agents"""
+        return jsonify(
+            {
+                "agents": [
+                    {
+                        "id": agent_id,
+                        "name": agent.name,
+                        "description": agent.description,
+                    }
+                    for agent_id, agent in AGENTS.items()
+                ]
+            }
+        )
