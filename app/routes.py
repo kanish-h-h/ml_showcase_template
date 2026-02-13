@@ -1,4 +1,4 @@
-from flask import json, render_template, jsonify, request
+from flask import render_template, jsonify, request
 from .models.model_loader import SentimentClassifier, ModelManager
 from .agents.agent_system import AGENTS
 
@@ -14,14 +14,14 @@ def init_app(app):
                 "description": "Classifies text sentiment with 92% accuracy",
                 "demo_url": "/demo/sentiment",
                 "github_url": "#",
-                "tags": ["NLP", "Classification", "Scikit-Learn"],
+                "tags": ["NLP", "Classification", "Scikit-learn"],
             },
             {
                 "title": "Image Classifier",
                 "description": "CNN-based image recognition",
                 "demo_url": "/demo/image",
                 "github_url": "#",
-                "tags": ["CNN", "Computer Vision", "PyTorch"],
+                "tags": ["Computer Vision", "CNN", "PyTorch"],
             },
         ]
         return render_template("index.html", projects=projects)
@@ -34,11 +34,17 @@ def init_app(app):
             models_info.append(
                 {
                     "name": model_name,
-                    "description": "Trained on custon dataset",
-                    "accuracy": "N/A",  # Load from metadata if available
+                    "description": "Trained on custom dataset",
+                    "accuracy": "N/A",
                 }
             )
-        return render_template("gallery.html", models_info=models_info)
+        return render_template("gallery.html", models=models_info)
+
+    # ===== NEW: API Documentation Page =====
+    @app.route("/api_docs")
+    def api_docs_page():  # Route name must match url_for()
+        """API documentation page"""
+        return render_template("api_docs.html")
 
     # ===== ML DEMO PAGES =====
     @app.route("/demo/sentiment")
@@ -53,7 +59,19 @@ def init_app(app):
         """Image classification demo"""
         return render_template("demos/image_demo.html", title="Image Classifier Demo")
 
-    # ===== API ENDPOINTS FOR PREDICTION =====
+    # ===== AGENT DEMO PAGES =====
+    @app.route("/demo/agent/<agent_name>")
+    def agent_demo(agent_name):
+        """Interactive agent demo page"""
+        agent = AGENTS.get(agent_name)
+        if not agent:
+            return "Agent not found", 404
+
+        return render_template(
+            "demos/agent_demo.html", agent=agent, title=f"{agent.name} Demo"
+        )
+
+    # ===== API ENDPOINTS FOR PREDICTIONS =====
     @app.route("/api/predict/sentiment", methods=["POST"])
     def predict_sentiment():
         """API endpoint for sentiment prediction"""
@@ -78,19 +96,7 @@ def init_app(app):
         """List all available models"""
         return jsonify({"models": ModelManager.list_available_models()})
 
-    # ===== AGENTS =====
-
-    @app.route("/demo/agent/<agent_name>")
-    def agent_demo(agent_name):
-        """Interactive agent demo page"""
-        agent = AGENTS.get(agent_name)
-        if not agent:
-            return "Agent not found", 404
-
-        return render_template(
-            "demos/agent_demo.html", agent=agent, title=f"{agent.name} Demo"
-        )
-
+    # ===== AGENT API ENDPOINTS =====
     @app.route("/api/agent/<agent_name>/chat", methods=["POST"])
     def agent_chat(agent_name):
         """API endpoint for agent interaction"""
@@ -112,7 +118,7 @@ def init_app(app):
                 {
                     "success": True,
                     "response": response,
-                    "history": agent.conversation_history[-5:],  # last 5 messages
+                    "history": agent.conversation_history[-5:],  # Last 5 messages
                 }
             )
 
