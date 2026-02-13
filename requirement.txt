@@ -1,0 +1,30 @@
+# Core
+flask
+python-dotenv
+
+# ML Dependencies
+scikit-learn
+numpy
+pandas
+joblib
+
+# Deep Learning (if needed)
+# tensorflow
+# torch
+# torchvision
+
+# NLP (if needed)
+# transformers
+# spacy
+
+# Agents & LLMs (if needed)
+# langchain
+# openai
+# anthropic
+
+# Visualization
+plotly
+matplotlib
+
+# Production
+gunicorn
